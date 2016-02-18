@@ -64,12 +64,74 @@ public class SendWithUs
         URL connectionURL = new URL(url);
         HttpURLConnection connection;
         
+        /*
+         * Https connection doesn't work with GAE?
+         */
+         /*
+         ALLVARLIG: com.google.apphosting.utils.security.urlfetch.URLFetchServiceStreamHandler$Connection cannot be cast to javax.net.ssl.HttpsURLConnection
+java.lang.ClassCastException: com.google.apphosting.utils.security.urlfetch.URLFetchServiceStreamHandler$Connection cannot be cast to javax.net.ssl.HttpsURLConnection
+        at com.sendwithus.SendWithUs.createConnection(SendWithUs.java:72)
+        at com.sendwithus.SendWithUs.makeURLRequest(SendWithUs.java:160)
+        at com.sendwithus.SendWithUs.send(SendWithUs.java:494)
+        at com.sendwithus.SendWithUs.send(SendWithUs.java:394)
+        at com.sendwithus.SendWithUs.send(SendWithUs.java:356)
+        at com.sendwithus.SendWithUs.send(SendWithUs.java:328)
+        at com.sendwithus.SendWithUs.send(SendWithUs.java:302)
+        at com.sendwithus.SendWithUs.send(SendWithUs.java:279)
+        at util.sendgrid.SendWithUsEmail.send(SendWithUsEmail.java:63)
+        at se.workaround.message.TestMessage.test(TestMessage.java:103)
+        at se.workaround.filter.WorkaroundFilter.doHttpFilter(WorkaroundFilter.java:451)
+        at util.web.DefaultFilter.doFilter(DefaultFilter.java:32)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at se.workaround.filter.AuthorizationFilter.doHttpFilter(AuthorizationFilter.java:63)
+        at util.web.DefaultFilter.doFilter(DefaultFilter.java:32)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at se.workaround.filter.RedirectFilter.doHttpFilter(RedirectFilter.java:38)
+        at util.web.DefaultFilter.doFilter(DefaultFilter.java:32)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.googlecode.objectify.cache.AsyncCacheFilter.doFilter(AsyncCacheFilter.java:58)
+        at com.googlecode.objectify.ObjectifyFilter.doFilter(ObjectifyFilter.java:48)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.google.appengine.api.socket.dev.DevSocketFilter.doFilter(DevSocketFilter.java:74)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.google.appengine.tools.development.ResponseRewriterFilter.doFilter(ResponseRewriterFilter.java:127)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.google.appengine.tools.development.HeaderVerificationFilter.doFilter(HeaderVerificationFilter.java:34)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.google.appengine.api.blobstore.dev.ServeBlobFilter.doFilter(ServeBlobFilter.java:63)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.google.apphosting.utils.servlet.TransactionCleanupFilter.doFilter(TransactionCleanupFilter.java:43)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.google.appengine.tools.development.StaticFileFilter.doFilter(StaticFileFilter.java:125)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at com.google.appengine.tools.development.DevAppServerModulesFilter.doDirectRequest(DevAppServerModulesFilter.java:366)
+        at com.google.appengine.tools.development.DevAppServerModulesFilter.doDirectModuleRequest(DevAppServerModulesFilter.java:349)
+        at com.google.appengine.tools.development.DevAppServerModulesFilter.doFilter(DevAppServerModulesFilter.java:116)
+        at org.mortbay.jetty.servlet.ServletHandler$CachedChain.doFilter(ServletHandler.java:1157)
+        at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:388)
+        at org.mortbay.jetty.security.SecurityHandler.handle(SecurityHandler.java:216)
+        at org.mortbay.jetty.servlet.SessionHandler.handle(SessionHandler.java:182)
+        at org.mortbay.jetty.handler.ContextHandler.handle(ContextHandler.java:765)
+        at org.mortbay.jetty.webapp.WebAppContext.handle(WebAppContext.java:418)
+        at com.google.appengine.tools.development.DevAppEngineWebAppContext.handle(DevAppEngineWebAppContext.java:98)
+        at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+        at com.google.appengine.tools.development.JettyContainerService$ApiProxyHandler.handle(JettyContainerService.java:502)
+        at org.mortbay.jetty.handler.HandlerWrapper.handle(HandlerWrapper.java:152)
+        at org.mortbay.jetty.Server.handle(Server.java:326)
+        at org.mortbay.jetty.HttpConnection.handleRequest(HttpConnection.java:542)
+        at org.mortbay.jetty.HttpConnection$RequestHandler.content(HttpConnection.java:938)
+        at org.mortbay.jetty.HttpParser.parseNext(HttpParser.java:755)
+        at org.mortbay.jetty.HttpParser.parseAvailable(HttpParser.java:218)
+        at org.mortbay.jetty.HttpConnection.handle(HttpConnection.java:404)
+        at org.mortbay.io.nio.SelectChannelEndPoint.run(SelectChannelEndPoint.java:409)
+        at org.mortbay.thread.QueuedThreadPool$PoolThread.run(QueuedThreadPool.java:582)
+         */
         /* Detect and allow HTTP connections (useful for testing) */
-        if (connectionURL.getProtocol().equals("https")) {
-            connection = (HttpsURLConnection) connectionURL.openConnection();
-        } else {
+//        if (connectionURL.getProtocol().equals("https")) {
+//            connection = (HttpsURLConnection) connectionURL.openConnection();
+//        } else {
             connection = (HttpURLConnection) connectionURL.openConnection();
-        }
+//        }
         
         connection.setConnectTimeout(30000); // 30 seconds
         connection.setReadTimeout(60000); // 60 seconds
